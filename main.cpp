@@ -26,13 +26,13 @@ int otherDieRollBCITS3AMANDTHISDUMBTHINGWONTWORK(){
 class Board{
 public: 
   int size = 60;
-  int p1Pos;
-  int p2Pos;
-  int p3Pos;
-  int p4Pos;
+//had to intialise these because the random memory that was stored there was causing me problems
+  int p1Pos=0;
+  int p2Pos=0;
+  int p3Pos=70;
+  int p4Pos=70;
   char* realBoard[60];
-
- 
+  
 };
 
 
@@ -78,17 +78,91 @@ int inLast(Board board){
 
 
 void printBoard(Board board){
+  board.realBoard[board.p1Pos] = "$";
+  board.realBoard[board.p2Pos] = "&";
+  if ((board.p3Pos >= 0 )&&(board.p3Pos <= 60)) board.realBoard[board.p3Pos] = "@";
+  if ((board.p4Pos >= 0 )&&(board.p4Pos <= 60)) board.realBoard[board.p4Pos] = "#";
+  
   printf("|");
-  for (int i = 0; i<board.size; i++) {board.realBoard[i] = block;
-  cout<< board.realBoard[i];}
+  for (int i = 0; i<board.size; i++)cout<< board.realBoard[i];
   printf("|");
 }
 //Determines how the player will move after the roll.
 void playerPos(int total,int player,Board board){
+ 
+
+      
+      
+}
+
+
+int main() {
+  
+   Board board;
+    for (int i = 0; i<board.size; i++) board.realBoard[i] = block;
+  
+  printf("hi");
+  int players;
+  cin>>players;
+  switch (players){
+    case 2 : {
+      board.p1Pos = 0; 
+      board.p2Pos = 0;
+
+      break;
+    }
+    case 3:{
+      board.p1Pos = 0; 
+      board.p2Pos = 0;
+      board.p3Pos = 0;
+
+      break;}
+    case 4 :{
+      board.p1Pos = 0; 
+      board.p2Pos = 0;
+      board.p3Pos = 0;
+      board.p4Pos = 0;
+      
+      break;
+    }
+        default:{ board.p1Pos = 0; 
+      board.p2Pos = 0;
+      printf("Whatever you entered was wrong so I'll go ahead and assume you meant two");
+          break;
+      }
+  }
+
+ printBoard(board);
+
+  
+  
+  printBoard( board);
+printf("%d",board.p1Pos);
+
+
+  srand(time(NULL));
+
+
+
+
+  
+  int player=1;
+ bool running=true;
+  //game loop
+  while(running){
+    if (player >players ) player =1;
+      printf("Player %d's turn\n",player);
+   // printBoard(board);
+  int die1 = (rand() % 6)+1;
+  int die = (rand()%11)/2+1;
+  int total = die1+die;
+   //player one dice movements
   if (player==1){
     switch(total){
       case 2 :{
+        //printf("i ran");
         board.p1Pos += 2;
+        //return board.p1Pos;
         break;
       }
       case 3: {
@@ -174,7 +248,9 @@ void playerPos(int total,int player,Board board){
         break;
       }
     }
+    if ((board.p1Pos == board.p2Pos || board.p1Pos == board.p3Pos||board.p1Pos == board.p4Pos) && board.p1Pos != 0) board.p1Pos = 0;
   }
+  //player 2
   if (player==2){
    switch(total){
       case 2 :{
@@ -264,7 +340,9 @@ void playerPos(int total,int player,Board board){
         break;
       }
     } 
+    if ((board.p2Pos == board.p1Pos || board.p2Pos == board.p3Pos||board.p2Pos == board.p4Pos) && board.p2Pos != 0) board.p2Pos = 0;
   }
+  //player 3
   if (player==3){
     switch(total){
       case 2 :{
@@ -354,7 +432,9 @@ void playerPos(int total,int player,Board board){
         break;
       }
     }
+    if ((board.p3Pos == board.p2Pos || board.p3Pos == board.p1Pos||board.p3Pos == board.p4Pos) && board.p3Pos != 0) board.p3Pos = 0;
   }
+  //player 4
   if (player==4){
     switch(total){
       case 2 :{
@@ -444,46 +524,20 @@ void playerPos(int total,int player,Board board){
         break;
       }
     }
+    if ((board.p4Pos == board.p2Pos || board.p4Pos == board.p3Pos||board.p4Pos == board.p1Pos) && board.p4Pos != 0) board.p4Pos = 0;
   }
-}
+  printf("You rolled a %d and a %d for a total of %d\n",die1,die,total);
+    //if (total ==7) printf("%d",temp);
+    printBoard(board);
+   printf("Press any key to continue to the next player's turn"); 
+    cin.ignore(1);
+   cin.get();
 
+  player++;
 
-int main() {
-   Board board;
-
-  printf("hi");
-  int players;
-  cin>>players;
-  switch (players){
-    case 2 : {
-      board.p1Pos = 0; 
-      board.p2Pos = 0;
-      printf("$&");
-      break;
-    }
-    case 3:{
-      board.p1Pos = 0; 
-      board.p2Pos = 0;
-      board.p3Pos = 0;
-      printf("$&@");
-      break;}
-    case 4 :{
-      board.p1Pos = 0; 
-      board.p2Pos = 0;
-      board.p3Pos = 0;
-      board.p4Pos = 0;
-      printf("$&@#");
-      break;
-    }
-        default:{ board.p1Pos = 0; 
-      board.p2Pos = 0;
-      printf("Whatever you entered was wrong so I'll go ahead and assume you meant two\n$&");
-          break;
-      }
+  
+    
   }
- printBoard(board);
 
-  //std::cout << diceRoll();
- printf("%d,%d",dieRoll(),otherDieRollBCITS3AMANDTHISDUMBTHINGWONTWORK());
   return 0;
 }
