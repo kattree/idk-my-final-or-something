@@ -2,10 +2,9 @@
 Author: kattree
 Last Update: July 29, 2022
 Project: Final- The board game Sorry
-Purpose: 2-3 player moves through 60 spaces to try to be the first one to the finish. Each dice roll has different tricks that may be hiding up its sleeve
+Purpose: 2-4 player moves through 60 spaces to try to be the first one to the finish. Each dice roll has different tricks that may be hiding up its sleeve
 */
 //I have an obsession with if statements
-
 #include <iostream>
 #include <cstdio>
 #include <ctime>
@@ -15,7 +14,8 @@ Purpose: 2-3 player moves through 60 spaces to try to be the first one to the fi
 #define block "\u25a9"
 using namespace std;
 
-
+//classes are private structs but I made mine public
+//Holds the players and their postitions and also the size of the board
 class Board{
 public: 
   int size = 60;
@@ -93,7 +93,7 @@ int main() {
   int player=1;
   int players;
   bool running=true;
-  //int t,th,f,fv,sx,sv =
+  //variables for dice roll number
   int t =0;
   int th =0;
   int f=0;
@@ -106,6 +106,7 @@ int main() {
   int lvn = 0 ;
   int tw = 0;
   Board board;
+  //allows the board to have sqaures so it can be visualised
     for (int i = 0; i<board.size; i++) board.realBoard[i] = block;
 
   //greeting
@@ -155,8 +156,10 @@ int main() {
     //player movement--determines how the player will move after each roll
    //player one dice movements
   if (player==1){
+    //checks if the player has rolled doubles
     if(die == die1) canroll1 = true;
     if (canroll1){ 
+    //checks if the player is not too close to the end   
     if(board.p1Pos <= 50){  
     switch(total){
       case 2 :{
@@ -195,6 +198,7 @@ int main() {
       case 7:{
         sv++;
         printf("Did a good ol' switchero with another player");
+        //temporarily stores the positions of two players to swap them
         int temp;
         int temp2;
         if (inLast(board) == 1) break;
@@ -277,11 +281,13 @@ int main() {
     if ((board.p1Pos == board.p2Pos || board.p1Pos == board.p3Pos||board.p1Pos == board.p4Pos) && board.p1Pos != 0) {board.p1Pos = 0; printf("It seems as though you landed on the same square as another player. Back to the beginning!\n");}
         printf("Player %d you are at square %d\n", player,board.p1Pos);
       }
+      //here a player's dice roll must equal the end of the board
       else {printf("You must roll the perfect number to reach victory from this point forward! Unless someone switches with you, then you're unlucky");if(board.size-board.p1Pos == total)board.p1Pos = 59;}
   }
     else printf("No double. No move.\n");
   }  
   //player 2
+  //includes the same routines as player one  
   if (player==2){
     if(die == die1) canroll2 = true;
     if(canroll2){
@@ -665,14 +671,20 @@ t++;
 //checks to see if anyone has won
      if (board.p1Pos == 59||board.p2Pos == 59 ||board.p3Pos == 59||board.p4Pos == 59){
     printf("\n Player %d wins. Would you like to play again?(y/n)",player);
-       printf("Number of time each number was rolled:\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n 7: %d\n 8: %d\n 9: %d\n 10: %d\n 11: %d\n 12: 1 \n",t,th,f,fv,sx,sv,e,n,lvn);
+       //prints the amount of time each number was rolled
+       printf("Number of time each number was rolled:\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n 7: %d\n 8: %d\n 9: %d\n 10: %d\n 11: %d\n 12: %d \n",t,th,f,fv,sx,sv,e,n,tn,lvn,tw);
       char throwaway;
       cin>>throwaway;
+       //checks to see if the player wants to play again and resets everything to the default values
       if(throwaway == 'y'){
         cout<< "How players would you like this time?\n";
         play = true;
         player = 1;
         board.p1Pos = 70; board.p2Pos = 70; board.p3Pos = 70; board.p4Pos = 70;
+           canroll1=false;
+           canroll2=false;
+            canroll3=false;
+           canroll4=false;
         continue;
       }
       else
